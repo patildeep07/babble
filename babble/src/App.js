@@ -7,6 +7,7 @@ import { Profile } from "./pages/profile";
 
 function App() {
   const isLoggedIn = false;
+
   return (
     <div className="App">
       {isLoggedIn && (
