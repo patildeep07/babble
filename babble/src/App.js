@@ -16,8 +16,8 @@ function App() {
       {isLoggedIn && (
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Profile />} />
+          <Route path="/signup" element={<Profile />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       )}

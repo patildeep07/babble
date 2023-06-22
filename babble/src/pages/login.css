@@ -4,17 +4,19 @@
   grid-area: left;
   background-color: #001c30;
   height: 100vh;
+  width: 50vw;
 }
 
 .right-aside {
   grid-area: right;
   background-color: #64ccc5;
   height: 100vh;
+  width: 50vw;
 }
 
-.login-grid-layout {
+.login-layout {
   display: grid;
-  grid-template-areas: "left right";
+  grid-template-areas: "left  right";
 }
 
 /* Content layout */
@@ -24,4 +26,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+/* Items */
+
+.icon-image {
+  background-image: url(../images/login-icon.png);
+  width: 150px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-size: 150px;
+}
+
+.right-aside h1 {
+  color: #001c30;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 650px) {
+  .login-layout {
+    grid-template-areas:
+      "left"
+      "right";
+  }
+
+  .left-aside,
+  .right-aside {
+    width: 100vw;
+  }
 }
