@@ -1,0 +1,27 @@
+/* Grid layout */
+
+.left-aside {
+  grid-area: left;
+  background-color: #001c30;
+  height: 100vh;
+}
+
+.right-aside {
+  grid-area: right;
+  background-color: #64ccc5;
+  height: 100vh;
+}
+
+.login-grid-layout {
+  display: grid;
+  grid-template-areas: "left right";
+}
+
+/* Content layout */
+
+.centre-align {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -4,9 +4,12 @@ import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { Signup } from "./pages/signup";
 import { Profile } from "./pages/profile";
+import { useContext } from "react";
+import { AuthContext } from "./context/authProvider";
 
 function App() {
-  const isLoggedIn = false;
+  const { authData } = useContext(AuthContext);
+  const { isLoggedIn } = authData;
 
   return (
     <div className="App">

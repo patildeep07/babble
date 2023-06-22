@@ -10,7 +10,18 @@ export const AuthProvider = ({ children }) => {
 
   // Setting up useReducer
 
-  const [authData, authDispatch] = useReducer(reducerFunc, {});
+  const [authData, authDispatch] = useReducer(reducerFunc, {
+    isLoggedIn: false,
+  });
 
-  return <AuthContext.Provider>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{
+        authData,
+        authDispatch,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
