@@ -2,6 +2,9 @@
   text-align: center;
   box-sizing: border-box;
   background-color: #001c30;
+}
+
+* {
   margin: 0;
 }
 
@@ -13,7 +16,27 @@ p {
   color: #ffffff;
 }
 
+/* Grid Layout for entire app */
+
+.layout-25-50-25 {
+  display: grid;
+  grid-template-columns: 25% auto 25%;
+  min-height: 80vh;
+}
+
+/* Flex styles */
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* Common Css styles */
+
+.header {
+  padding: 10px 30px;
+  border-bottom: 1px solid #dafffb;
+}
 
 .flex {
   display: flex;

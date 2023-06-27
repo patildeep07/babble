@@ -12,7 +12,7 @@ function App() {
   const { isLoggedIn } = authData;
 
   return (
-    <div className="App">
+    <div className="App ">
       {isLoggedIn && (
         <Routes>
           <Route path="/" element={<Home />} />

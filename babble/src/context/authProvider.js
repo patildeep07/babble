@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -10,11 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   // Reducer function
   const reducerFunc = (state, action) => {
-    console.log({ state, action });
     switch (action.type) {
       case "SET_CURRENT_USER":
         return { ...state, isLoggedIn: true, currentUser: action.payload };
 
+      case "SET_ALL_USERS":
+        return { ...state, allUsers: action.payload };
       default:
         break;
     }
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
   const [authData, authDispatch] = useReducer(reducerFunc, {
     isLoggedIn: false,
     currentUser: {},
+    allUsers: [],
   });
 
   // Creating a new user function (i.e. Sign Up)
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }) => {
       const { status } = await axios.post("/api/auth/signup", credentials);
       if (status === 201) {
         alert("User created. You can proceed to login");
+        getAllUsers();
       } else if (status === 422) {
         alert(`Username already exists!`);
       }
@@ -60,6 +63,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Show all users available
+
+  const getAllUsers = async () => {
+    try {
+      const {
+        data: { users },
+      } = await axios.get("/api/users");
+      authDispatch({ type: "SET_ALL_USERS", payload: users });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   return (
     <AuthContext.Provider

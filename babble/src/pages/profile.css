@@ -1,0 +1,5 @@
+.left-aside,
+.middle-content,
+.right-aside {
+  min-height: 90vh;
+}

@@ -8,13 +8,11 @@ import { AuthContext } from "../context/authProvider";
 import axios from "axios";
 
 export const Login = () => {
-  const [allUsers, setAllUsers] = useState([]);
   const clickHandler = async () => {
     try {
       const { data, status } = await axios.get("/api/users");
       if (status === 200) {
         console.log(data);
-        setAllUsers(data.users);
       }
     } catch (error) {
       alert(error);
@@ -63,13 +61,17 @@ export const Login = () => {
         <div className="form">
           <h3>Username:</h3>
           <input
-            onClick={(e) => setUserDetails(e.target.value)}
+            onChange={(e) =>
+              setUserDetails({ ...userDetails, username: e.target.value })
+            }
             placeholder="adarshbalika"
             className="text-field"
           ></input>
           <h3>Password:</h3>
           <input
-            onClick={(e) => setUserDetails(e.target.value)}
+            onChange={(e) =>
+              setUserDetails({ ...userDetails, password: e.target.value })
+            }
             placeholder="adarshBalika123"
             type="password"
             className="text-field"
