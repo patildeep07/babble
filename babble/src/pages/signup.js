@@ -6,17 +6,21 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/authProvider";
 
+import avatarImage from "../backend/db/avatars/Avatar-1.png";
+
 export const Signup = () => {
   const { signUp } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // useState for storing details of new user
+
   const [newUser, setNewUser] = useState({
     firstName: "",
     lastName: "",
     username: "",
     password: "",
     confirmPassword: "",
+    avatar: avatarImage,
   });
 
   // SignUp handler function

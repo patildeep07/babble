@@ -10,6 +10,9 @@ import { UserProfileContent } from "../components/userProfileContent";
 export const Profile = () => {
   const { authData } = useContext(AuthContext);
   console.log(authData);
+
+  const { currentUser } = authData;
+
   return (
     <div>
       {/* Header */}
