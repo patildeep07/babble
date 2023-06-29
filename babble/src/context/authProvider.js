@@ -16,6 +16,10 @@ export const AuthProvider = ({ children }) => {
 
       case "SET_ALL_USERS":
         return { ...state, allUsers: action.payload };
+
+      case "LOGOUT":
+        return { ...state, isLoggedIn: false, currentUser: {} };
+
       default:
         break;
     }
@@ -62,6 +66,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Logout user
+
+  const logoutHandler = () => {
+    alert("Logged out");
+    localStorage.removeItem("encodedToken");
+    authDispatch({ type: "LOGOUT" });
+    navigate("/login");
+  };
+
   // Show all users available
 
   const getAllUsers = async () => {
@@ -86,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         authDispatch,
         signUp,
         logInUser,
+        logoutHandler,
       }}
     >
       {children}

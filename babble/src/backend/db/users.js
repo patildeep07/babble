@@ -5,7 +5,11 @@ import { formatDate } from "../utils/authUtils";
  * You can add default users of your wish with different attributes
  * */
 
-import avatarImage from "./avatars/Avatar-1.png";
+import avatarImage1 from "./avatars/Avatar-1.png";
+import avatarImage2 from "./avatars/Avatar-2.png";
+import avatarImage3 from "./avatars/Avatar-3.png";
+import avatarImage4 from "./avatars/Avatar-4.png";
+import avatarImage5 from "./avatars/Avatar-5.png";
 
 export const users = [
   {
@@ -16,7 +20,7 @@ export const users = [
     password: "adarshBalika123",
     createdAt: formatDate(),
     updatedAt: formatDate(),
-    avatar: avatarImage,
+    avatar: avatarImage1,
     bio: "Hey, this is my bio",
   },
   {
@@ -27,7 +31,7 @@ export const users = [
     password: "123",
     createdAt: formatDate(),
     updatedAt: formatDate(),
-    avatar: avatarImage,
+    avatar: avatarImage3,
   },
   {
     _id: uuid(),
@@ -37,6 +41,36 @@ export const users = [
     password: "123",
     createdAt: formatDate(),
     updatedAt: formatDate(),
-    avatar: avatarImage,
+    avatar: avatarImage1,
+  },
+  {
+    _id: uuid(),
+    firstName: "Ketki",
+    lastName: "Ghadge",
+    username: "ketkighadge",
+    password: "123",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+    avatar: avatarImage2,
+  },
+  {
+    _id: uuid(),
+    firstName: "Atharva",
+    lastName: "Todankar",
+    username: "atharvatodankar",
+    password: "123",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+    avatar: avatarImage4,
+  },
+  {
+    _id: uuid(),
+    firstName: "Nishita",
+    lastName: "Thapa",
+    username: "nishitathapa",
+    password: "123",
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+    avatar: avatarImage5,
   },
 ];
