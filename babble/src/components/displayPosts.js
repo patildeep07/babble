@@ -3,7 +3,7 @@ import { AuthContext } from "../context/authProvider";
 
 export const DisplayPosts = ({ post }) => {
   const { authData } = useContext(AuthContext);
-  const { allUsers } = authData;
+  const { allUsers, currentUser } = authData;
 
   const { username, _id, content, likes, createdAt, postImage } = post;
 
@@ -13,7 +13,7 @@ export const DisplayPosts = ({ post }) => {
   const time = `${timeObj.getDate()} / ${timeObj.getMonth()} / ${timeObj.getFullYear()}`;
 
   const foundUser = allUsers.find((user) => user.username === username);
-  const { firstName, lastName } = foundUser;
+  // const { firstName, lastName } = foundUser;
 
   return (
     <div
@@ -29,23 +29,43 @@ export const DisplayPosts = ({ post }) => {
         alignItems: "center",
       }}
     >
-      <div style={{ textAlign: "left" }}>
+      <div style={{ textAlign: "left", width: "100%" }}>
         {/* Post details starts */}
-        <div style={{ display: "flex", gap: "5px" }}>
-          <img alt="user" src={foundUser.avatar} style={{ height: "50px" }} />
+        <div
+          style={{
+            display: "flex",
+            gap: "5px",
+            justifyContent: "space-between",
+          }}
+        >
+          <img alt="user" src={foundUser?.avatar} style={{ height: "50px" }} />
 
           {/* Column bio */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {/* First row */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifySelf: "flex-start",
+              flexGrow: "1",
+            }}
+          >
+            {/* First column */}
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <h3>
-                {firstName} {lastName}
+                {foundUser?.firstName} {foundUser?.lastName}
               </h3>
               <p style={{ fontWeight: "lighter" }}>{time}</p>
             </div>
-            {/* Second row */}
+
+            {/* Second column */}
             <p style={{ fontWeight: "lighter" }}>@{username}</p>
           </div>
+          {/* Third column */}
+          {currentUser.username === username && (
+            <h2 style={{ textDecoration: "underline", cursor: "pointer" }}>
+              EDIT
+            </h2>
+          )}
         </div>
 
         {/* Third row */}

@@ -40,7 +40,6 @@ export const UserProfileContent = () => {
   const userPosts = allPosts?.filter(
     ({ username }) => username === currentUser.username
   );
-  console.log("User posts:", userPosts);
 
   return (
     <div
