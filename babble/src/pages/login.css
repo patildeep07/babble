@@ -30,14 +30,6 @@
 
 /* Items */
 
-.icon-image {
-  background-image: url(../images/login-icon.png);
-  width: 150px;
-  height: 150px;
-  background-repeat: no-repeat;
-  background-size: 150px;
-}
-
 .right-aside h1 {
   color: #001c30;
 }

@@ -1,9 +1,21 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/authProvider";
+import { PostContext } from "../context/postProvider";
+import { useNavigate } from "react-router-dom";
+import { DisplayPosts } from "./displayPosts";
 
 export const UserProfileContent = () => {
+  // UseContexts
+
   const { authData } = useContext(AuthContext);
   const { currentUser } = authData;
+
+  const { postData } = useContext(PostContext);
+  const { allPosts } = postData;
+
+  // Random init
+
+  const navigate = useNavigate();
 
   // Destructuring current user
   const {
@@ -18,15 +30,29 @@ export const UserProfileContent = () => {
     following,
   } = currentUser;
 
+  // Converting date
+
+  const dateObj = new Date(createdAt);
+  const date = `${dateObj.getDate()}/${dateObj.getMonth()}/${dateObj.getFullYear()}`;
+
+  // User posts
+
+  const userPosts = allPosts?.filter(
+    ({ username }) => username === currentUser.username
+  );
+  console.log("User posts:", userPosts);
+
   return (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "start",
+        flexDirection: "column",
+        // justifyContent: "center",
+        alignItems: "center",
         margin: "20px 0",
       }}
     >
+      {/* Profile card section starts */}
       <div
         className="profile-card"
         style={{
@@ -44,6 +70,7 @@ export const UserProfileContent = () => {
             {firstName} {lastName}
           </h3>
           <p>@{username}</p>
+          <p>Joined on: {date}</p>
 
           {bio && <p>{bio}</p>}
           {url && <p>Find me at {url} </p>}
@@ -73,6 +100,30 @@ export const UserProfileContent = () => {
           </div>
         </div>
       </div>
+      {/* Profile card section ends */}
+
+      {/* User posts section start */}
+
+      {/* When 0 posts exists */}
+      {userPosts.length === 0 && (
+        <h1>
+          Create your first post.{" "}
+          <span
+            onClick={() => navigate("/create-post")}
+            style={{ textDecoration: "underline" }}
+          >
+            Here
+          </span>
+        </h1>
+      )}
+
+      {/* Display posts */}
+
+      {userPosts.map((item) => {
+        return <DisplayPosts key={item._id} post={item} />;
+      })}
+
+      {/* User posts section ends */}
     </div>
   );
 };

@@ -1,11 +1,9 @@
-import "./profile.css";
+import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import { LeftSidebar } from "../components/leftSidebar";
 import { RightSidebar } from "../components/rightSidebar";
-import { Footer } from "../components/footer";
-import { UserProfileContent } from "../components/userProfileContent";
 
-export const Profile = () => {
+export const Explore = () => {
   return (
     <div>
       {/* Header */}
@@ -16,7 +14,7 @@ export const Profile = () => {
         <LeftSidebar className="left-aside" />
 
         {/* Middle Content */}
-        <UserProfileContent className="middle-content" />
+        <h1>Content</h1>
 
         {/* Right side bar */}
         <RightSidebar className="right-aside" />

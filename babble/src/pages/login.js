@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import "../App.css";
 import "./login.css";
 
+import loginIcon from "../images/login-icon.png";
+
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/authProvider";
@@ -50,7 +52,7 @@ export const Login = () => {
       {/* Left Side */}
 
       <div className="left-aside centre-align">
-        <div className="icon-image"></div>
+        <img alt="chatIcon" src={loginIcon} style={{ height: "100px" }} />
         <h1>Welcome to Babble...</h1>
       </div>
 

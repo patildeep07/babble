@@ -6,6 +6,8 @@ import { Signup } from "./pages/signup";
 import { Profile } from "./pages/profile";
 import { useContext } from "react";
 import { AuthContext } from "./context/authProvider";
+import { Explore } from "./pages/explore";
+import { Bookmarks } from "./pages/bookmarks";
 
 function App() {
   const { authData } = useContext(AuthContext);
@@ -19,6 +21,8 @@ function App() {
           <Route path="/login" element={<Profile />} />
           <Route path="/signup" element={<Profile />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
         </Routes>
       )}
 
@@ -28,6 +32,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Login />} />
+          <Route path="/explore" element={<Login />} />
+          <Route path="/bookmarks" element={<Login />} />
         </Routes>
       )}
     </div>
