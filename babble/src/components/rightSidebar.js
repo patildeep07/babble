@@ -1,12 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authProvider";
 import "../App.css";
 
 export const RightSidebar = () => {
-  const { authData } = useContext(AuthContext);
-  const { allUsers, currentUser } = authData;
-
-  const suggestionUsers = allUsers.filter(({ _id }) => _id !== currentUser._id);
+  const { authData, followUserHandler } = useContext(AuthContext);
+  const { allUsers, currentUser, suggestedUsers } = authData;
 
   return (
     <div
@@ -18,8 +16,8 @@ export const RightSidebar = () => {
     >
       <h3>Suggestions for you</h3>
       <div className="users-div-sidebar">
-        {suggestionUsers.map(
-          ({ avatar, firstName, lastName, username, _id }) => {
+        {suggestedUsers.map(
+          ({ avatar, firstName, lastName, username, _id, followers }) => {
             return (
               <div key={_id}>
                 <div
@@ -38,12 +36,22 @@ export const RightSidebar = () => {
                     </p>
                     <p>@{username}</p>
                   </div>
-                  <button
-                    className="follow-btn"
-                    style={{ alignSelf: "center" }}
-                  >
-                    Follow
-                  </button>
+
+                  {followers.some(
+                    (currFollower) => currFollower._id === currentUser._id
+                  ) && <button disabled>Followed</button>}
+
+                  {!followers.some(
+                    (currFollower) => currFollower._id === currentUser._id
+                  ) && (
+                    <button
+                      onClick={() => followUserHandler(_id)}
+                      className="follow-btn"
+                      style={{ alignSelf: "center" }}
+                    >
+                      Follow
+                    </button>
+                  )}
                 </div>
 
                 <hr />

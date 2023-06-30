@@ -20,6 +20,9 @@ export const AuthProvider = ({ children }) => {
       case "LOGOUT":
         return { ...state, isLoggedIn: false, currentUser: {} };
 
+      case "SET_SUGGESTED_USERS":
+        return { ...state, suggestedUsers: action.payload };
+
       default:
         break;
     }
@@ -31,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn: false,
     currentUser: {},
     allUsers: [],
+    suggestedUsers: [],
   });
 
   // Creating a new user function (i.e. Sign Up)
@@ -92,6 +96,63 @@ export const AuthProvider = ({ children }) => {
     getAllUsers();
   }, []);
 
+  useEffect(() => {
+    getAllUsers();
+  }, [authData.currentUser]);
+
+  // Show suggested users
+
+  const showSuggestedUsers = () => {
+    const userList = authData.allUsers.filter(
+      (user) => user._id !== authData.currentUser._id
+    );
+    authDispatch({ type: "SET_SUGGESTED_USERS", payload: [...userList] });
+  };
+
+  useEffect(() => {
+    showSuggestedUsers();
+  }, [authData.allUsers]);
+
+  // follow user function
+  const token = localStorage.getItem("encodedToken");
+
+  const followUserHandler = async (followUserID) => {
+    try {
+      const {
+        status,
+        data: { user },
+      } = await axios.post(
+        `/api/users/follow/${followUserID}/`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+
+      // For 200 status, Success scenario
+      if (status === 200) {
+        alert("User followed");
+
+        authDispatch({ type: "SET_CURRENT_USER", payload: { ...user } });
+      }
+
+      if (status === 400) {
+        alert("You already follow this user");
+      }
+    } catch (error) {
+      if (error.status) {
+        const { status, data } = error.response;
+        alert(`Error code: ${status} Message: ${data.errors[0]}`);
+      } else {
+        alert(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -100,6 +161,7 @@ export const AuthProvider = ({ children }) => {
         signUp,
         logInUser,
         logoutHandler,
+        followUserHandler,
       }}
     >
       {children}
