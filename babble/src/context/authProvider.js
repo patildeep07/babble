@@ -132,7 +132,6 @@ export const AuthProvider = ({ children }) => {
       // For 200 status, Success scenario
       if (status === 200) {
         alert("User followed");
-
         authDispatch({ type: "SET_CURRENT_USER", payload: { ...user } });
       }
 
@@ -149,9 +148,41 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getAllUsers();
-  }, []);
+  // Unfollow user function
+
+  const unfollowUserHandler = async (unfollowUserID) => {
+    try {
+      const {
+        status,
+        data: { user },
+      } = await axios.post(
+        `/api/users/unfollow/${unfollowUserID}/`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+
+      // For 200 status, Success scenario
+      if (status === 200) {
+        alert("User unfollowed");
+        authDispatch({ type: "SET_CURRENT_USER", payload: { ...user } });
+      }
+
+      if (status === 400) {
+        alert("You don't follow this user");
+      }
+    } catch (error) {
+      if (error.status) {
+        const { status, data } = error.response;
+        alert(`Error code: ${status} Message: ${data.errors[0]}`);
+      } else {
+        alert(error);
+      }
+    }
+  };
+
+  // Functionalities end here
 
   return (
     <AuthContext.Provider
@@ -162,6 +193,7 @@ export const AuthProvider = ({ children }) => {
         logInUser,
         logoutHandler,
         followUserHandler,
+        unfollowUserHandler,
       }}
     >
       {children}

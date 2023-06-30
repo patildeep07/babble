@@ -3,7 +3,8 @@ import { AuthContext } from "../context/authProvider";
 import "../App.css";
 
 export const RightSidebar = () => {
-  const { authData, followUserHandler } = useContext(AuthContext);
+  const { authData, followUserHandler, unfollowUserHandler } =
+    useContext(AuthContext);
   const { allUsers, currentUser, suggestedUsers } = authData;
 
   return (
@@ -39,7 +40,15 @@ export const RightSidebar = () => {
 
                   {followers.some(
                     (currFollower) => currFollower._id === currentUser._id
-                  ) && <button disabled>Followed</button>}
+                  ) && (
+                    <button
+                      onClick={() => unfollowUserHandler(_id)}
+                      className="follow-btn"
+                      style={{ alignSelf: "center" }}
+                    >
+                      Unfollow
+                    </button>
+                  )}
 
                   {!followers.some(
                     (currFollower) => currFollower._id === currentUser._id
