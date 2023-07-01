@@ -65,9 +65,9 @@ export const users = [
   },
   {
     _id: uuid(),
-    firstName: "Nishita",
-    lastName: "Thapa",
-    username: "nishitathapa",
+    firstName: "Shloka",
+    lastName: "Gupta",
+    username: "shlokagupta",
     password: "123",
     createdAt: formatDate(),
     updatedAt: formatDate(),

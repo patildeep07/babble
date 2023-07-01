@@ -22,6 +22,9 @@ export const PostProvider = ({ children }) => {
       case "SET_HOME_POSTS":
         return { ...state, homePosts: action.payload };
 
+      case "SET_BOOKMARK_POSTS":
+        return { ...state, bookmarks: action.payload };
+
       default:
         break;
     }
@@ -33,6 +36,7 @@ export const PostProvider = ({ children }) => {
     allPosts: [],
     suggestedPosts: [],
     homePosts: [],
+    bookmarks: [],
   });
 
   // Destructuring data
@@ -102,11 +106,6 @@ export const PostProvider = ({ children }) => {
 
   const getHomePosts = () => {
     if (currentUser.following && currentUser.following.length > 0) {
-      // const homePosts = allPosts.filter(
-      //   (post) => post.username === currentUser.username
-      // );
-
-      // console.log({ homePosts });
       const followingsPost = allPosts.reduce(
         (acc, post) =>
           post.username === currentUser.username ||
@@ -116,14 +115,11 @@ export const PostProvider = ({ children }) => {
         []
       );
 
-      console.log({ followingsPost });
-
       postDispatch({ type: "SET_HOME_POSTS", payload: followingsPost });
     } else {
       const homePosts = allPosts.filter(
         (post) => post.username === currentUser.username
       );
-      console.log({ homePosts });
       postDispatch({ type: "SET_HOME_POSTS", payload: homePosts });
     }
   };
@@ -132,10 +128,72 @@ export const PostProvider = ({ children }) => {
     getHomePosts();
   }, [allUsers]);
 
+  // add to Bookmarks function
+
+  const token = localStorage.getItem("encodedToken");
+
+  const addToBookmarks = async (postId) => {
+    try {
+      const {
+        status,
+        data: { bookmarks },
+      } = await axios.post(
+        `/api/users/bookmark/${postId}`,
+        {},
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 200) {
+        const bookmarksList = allPosts.filter((post) =>
+          bookmarks.some(({ _id }) => _id === post._id)
+        );
+        postDispatch({ type: "SET_BOOKMARK_POSTS", payload: bookmarksList });
+        alert("Added to bookmarks");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  // Remove from bookmarks function
+
+  const removeFromBookmarks = async (postId) => {
+    try {
+      const {
+        status,
+        data: { bookmarks },
+      } = await axios.post(
+        `/api/users/remove-bookmark/${postId}`,
+        {},
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 200) {
+        const bookmarksList = allPosts.filter((post) =>
+          bookmarks.some(({ _id }) => _id === post._id)
+        );
+        postDispatch({ type: "SET_BOOKMARK_POSTS", payload: bookmarksList });
+        alert("Removed from bookmarks");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <PostContext.Provider
       value={{
         postData,
+        addToBookmarks,
+        removeFromBookmarks,
       }}
     >
       {children}

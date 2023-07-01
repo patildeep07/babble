@@ -1,19 +1,37 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/authProvider";
 
+import notBookmarked from "../images/notBookmarked.png";
+import bookmarked from "../images/bookmarked.png";
+import { PostContext } from "../context/postProvider";
+
 export const DisplayPosts = ({ post }) => {
+  // Usecontext
   const { authData } = useContext(AuthContext);
   const { allUsers, currentUser } = authData;
+
+  const { addToBookmarks, postData, removeFromBookmarks } =
+    useContext(PostContext);
+  const { bookmarks } = postData;
+
+  // Destructure data
 
   const { username, _id, content, likes, createdAt, postImage } = post;
 
   const { likeCount, likedBy, dislikedBy } = likes;
 
+  // get Time
+
   const timeObj = new Date(createdAt);
   const time = `${timeObj.getDate()} / ${timeObj.getMonth()} / ${timeObj.getFullYear()}`;
 
+  // Found user
+
   const foundUser = allUsers.find((user) => user.username === username);
-  // const { firstName, lastName } = foundUser;
+
+  // isBookmarked
+
+  const isBookmarked = bookmarks.some((post) => post._id === _id);
 
   return (
     <div
@@ -100,7 +118,23 @@ export const DisplayPosts = ({ post }) => {
 
           {/* Bookmark */}
           <div style={{ display: "flex" }}>
-            <p>V</p>
+            {!isBookmarked && (
+              <img
+                onClick={() => addToBookmarks(_id)}
+                alt="Click to add bookmark"
+                src={notBookmarked}
+                style={{ height: "25px", cursor: "pointer" }}
+              />
+            )}
+
+            {isBookmarked && (
+              <img
+                onClick={() => removeFromBookmarks(_id)}
+                alt="Click to remove bookmark"
+                src={bookmarked}
+                style={{ height: "25px", cursor: "pointer" }}
+              />
+            )}
           </div>
 
           {/* Share */}
