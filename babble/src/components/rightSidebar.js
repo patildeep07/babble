@@ -31,11 +31,11 @@ export const RightSidebar = () => {
                     src={avatar}
                     style={{ width: "50px" }}
                   />
-                  <div style={{ flexGrow: "1" }}>
-                    <p>
+                  <div style={{ flexGrow: "1", alignSelf: "center" }}>
+                    <p style={{ fontSize: "14px" }}>
                       {firstName} {lastName}
                     </p>
-                    <p>@{username}</p>
+                    <p style={{ fontSize: "14px" }}>@{username}</p>
                   </div>
 
                   {followers.some(

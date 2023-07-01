@@ -89,7 +89,7 @@ export const Login = () => {
             Don't have an account yet? Click here to create a new one!
           </p>
         </div>
-        <button onClick={clickHandler}>Show users</button>
+        {/* <button onClick={clickHandler}>Show users</button> */}
       </div>
     </div>
   );

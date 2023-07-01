@@ -37,6 +37,10 @@ export const AuthProvider = ({ children }) => {
     suggestedUsers: [],
   });
 
+  // Destructuring
+
+  const { currentUser, allUsers, suggestedUsers } = authData;
+
   // Creating a new user function (i.e. Sign Up)
 
   const signUp = async (credentials) => {
@@ -111,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     showSuggestedUsers();
-  }, [authData.allUsers]);
+  }, [allUsers]);
 
   // follow user function
   const token = localStorage.getItem("encodedToken");

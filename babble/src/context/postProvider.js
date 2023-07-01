@@ -19,6 +19,9 @@ export const PostProvider = ({ children }) => {
       case "SET_SUGGESTED_POSTS":
         return { ...state, suggestedPosts: action.payload };
 
+      case "SET_HOME_POSTS":
+        return { ...state, homePosts: action.payload };
+
       default:
         break;
     }
@@ -29,6 +32,7 @@ export const PostProvider = ({ children }) => {
   const [postData, postDispatch] = useReducer(postReducerFunc, {
     allPosts: [],
     suggestedPosts: [],
+    homePosts: [],
   });
 
   // Destructuring data
@@ -54,7 +58,7 @@ export const PostProvider = ({ children }) => {
 
   // Get suggested posts
 
-  const isInFollowing = (postUsername, following) => {
+  const isInFollowingForSuggested = (postUsername, following) => {
     if (following) {
       const boolValue = following.some(
         ({ username }) => username !== postUsername
@@ -65,12 +69,12 @@ export const PostProvider = ({ children }) => {
 
   // Explanation: If there are no one in following it'll filter only based on current user. Or else, it will take in consider for the follwing as well
 
-  const getSuggestedPosts = (sUser) => {
+  const getSuggestedPosts = () => {
     if (currentUser.following && currentUser.following.length > 0) {
       const explorePosts = allPosts.filter((post) =>
         post.username === currentUser.username
           ? false
-          : isInFollowing(post.username, currentUser.following)
+          : isInFollowingForSuggested(post.username, currentUser.following)
       );
       postDispatch({ type: "SET_SUGGESTED_POSTS", payload: explorePosts });
     } else {
@@ -82,7 +86,50 @@ export const PostProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getSuggestedPosts(suggestedUsers);
+    getSuggestedPosts();
+  }, [allUsers]);
+
+  // Get home posts
+
+  const isInFollowingForHome = (postUsername, following) => {
+    if (following) {
+      const boolValue = following.some(
+        ({ username }) => username === postUsername
+      );
+      return boolValue;
+    }
+  };
+
+  const getHomePosts = () => {
+    if (currentUser.following && currentUser.following.length > 0) {
+      // const homePosts = allPosts.filter(
+      //   (post) => post.username === currentUser.username
+      // );
+
+      // console.log({ homePosts });
+      const followingsPost = allPosts.reduce(
+        (acc, post) =>
+          post.username === currentUser.username ||
+          isInFollowingForHome(post.username, currentUser.following)
+            ? [...acc, post]
+            : [...acc],
+        []
+      );
+
+      console.log({ followingsPost });
+
+      postDispatch({ type: "SET_HOME_POSTS", payload: followingsPost });
+    } else {
+      const homePosts = allPosts.filter(
+        (post) => post.username === currentUser.username
+      );
+      console.log({ homePosts });
+      postDispatch({ type: "SET_HOME_POSTS", payload: homePosts });
+    }
+  };
+
+  useEffect(() => {
+    getHomePosts();
   }, [allUsers]);
 
   return (

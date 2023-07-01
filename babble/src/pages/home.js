@@ -13,13 +13,14 @@ export const Home = () => {
   const { currentUser } = authData;
 
   const { postData } = useContext(PostContext);
-  const { allPosts } = postData;
+  const { allPosts, homePosts } = postData;
 
   // Explore posts
 
-  const homePosts = allPosts?.filter(
-    ({ username }) => username === currentUser.username
-  );
+  // const homePosts = allPosts?.filter(
+  //   ({ username }) => username === currentUser.username
+  // );
+
   return (
     <div>
       {/* Header */}

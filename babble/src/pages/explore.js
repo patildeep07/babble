@@ -3,24 +3,14 @@ import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import { LeftSidebar } from "../components/leftSidebar";
 import { RightSidebar } from "../components/rightSidebar";
-import { AuthContext } from "../context/authProvider";
 import { PostContext } from "../context/postProvider";
 import { DisplayPosts } from "../components/displayPosts";
 
 export const Explore = () => {
   // useContexts
-  const { authData } = useContext(AuthContext);
-  const { currentUser, suggestedUsers } = authData;
 
   const { postData } = useContext(PostContext);
-  const { allPosts, suggestedPosts } = postData;
-
-  // Explore posts
-  console.log(suggestedPosts);
-
-  const explorePosts = allPosts?.filter((post) =>
-    suggestedUsers.some(({ username }) => username === post.username)
-  );
+  const { suggestedPosts } = postData;
 
   return (
     <div>
