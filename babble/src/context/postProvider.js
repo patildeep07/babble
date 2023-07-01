@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { AuthContext } from "./authProvider";
-import axios from "axios";
+import axios, { all } from "axios";
 
 export const PostContext = createContext();
 
@@ -41,15 +41,19 @@ export const PostProvider = ({ children }) => {
 
   // Destructuring data
 
-  const { allPosts } = postData;
+  const { allPosts, bookmarks } = postData;
 
   // All posts
+
+  const updateAllPosts = (givenPosts) => {
+    postDispatch({ type: "SET_ALL_POSTS", payload: [...givenPosts] });
+  };
 
   const getAllPosts = async () => {
     try {
       const { status, data } = await axios.get("/api/posts");
       if (status === 200) {
-        postDispatch({ type: "SET_ALL_POSTS", payload: [...data.posts] });
+        updateAllPosts(data.posts);
       }
     } catch (error) {
       alert(error);
@@ -105,6 +109,7 @@ export const PostProvider = ({ children }) => {
   };
 
   const getHomePosts = () => {
+    console.log({ allPosts });
     if (currentUser.following && currentUser.following.length > 0) {
       const followingsPost = allPosts.reduce(
         (acc, post) =>
@@ -126,7 +131,16 @@ export const PostProvider = ({ children }) => {
 
   useEffect(() => {
     getHomePosts();
-  }, [allUsers]);
+  }, [allUsers, allPosts]);
+
+  // update Bookmarks List
+
+  const updateBookmarksList = (postList, bookmarkList) => {
+    const newList = postList.filter((post) =>
+      bookmarkList.some(({ _id }) => _id === post._id)
+    );
+    postDispatch({ type: "SET_BOOKMARK_POSTS", payload: newList });
+  };
 
   // add to Bookmarks function
 
@@ -148,10 +162,8 @@ export const PostProvider = ({ children }) => {
       );
 
       if (status === 200) {
-        const bookmarksList = allPosts.filter((post) =>
-          bookmarks.some(({ _id }) => _id === post._id)
-        );
-        postDispatch({ type: "SET_BOOKMARK_POSTS", payload: bookmarksList });
+        updateBookmarksList(allPosts, bookmarks);
+
         alert("Added to bookmarks");
       }
     } catch (error) {
@@ -177,10 +189,8 @@ export const PostProvider = ({ children }) => {
       );
 
       if (status === 200) {
-        const bookmarksList = allPosts.filter((post) =>
-          bookmarks.some(({ _id }) => _id === post._id)
-        );
-        postDispatch({ type: "SET_BOOKMARK_POSTS", payload: bookmarksList });
+        updateBookmarksList(allPosts, bookmarks);
+
         alert("Removed from bookmarks");
       }
     } catch (error) {
@@ -188,12 +198,67 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  // Like post function
+
+  const likePost = async (postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await axios.post(
+        `/api/posts/like/${postId}`,
+        {},
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 201) {
+        updateAllPosts(posts);
+        updateBookmarksList(posts, bookmarks);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Dislike a post
+  const dislikePost = async (postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await axios.post(
+        `/api/posts/dislike/${postId}`,
+        {},
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 201) {
+        updateAllPosts(posts);
+        updateBookmarksList(posts, bookmarks);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Post functions ends here
+
   return (
     <PostContext.Provider
       value={{
         postData,
         addToBookmarks,
         removeFromBookmarks,
+        likePost,
+        dislikePost,
       }}
     >
       {children}

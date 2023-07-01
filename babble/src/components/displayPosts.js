@@ -3,6 +3,9 @@ import { AuthContext } from "../context/authProvider";
 
 import notBookmarked from "../images/notBookmarked.png";
 import bookmarked from "../images/bookmarked.png";
+import liked from "../images/liked.png";
+import notLiked from "../images/notLiked.png";
+
 import { PostContext } from "../context/postProvider";
 
 export const DisplayPosts = ({ post }) => {
@@ -10,8 +13,13 @@ export const DisplayPosts = ({ post }) => {
   const { authData } = useContext(AuthContext);
   const { allUsers, currentUser } = authData;
 
-  const { addToBookmarks, postData, removeFromBookmarks } =
-    useContext(PostContext);
+  const {
+    addToBookmarks,
+    postData,
+    removeFromBookmarks,
+    likePost,
+    dislikePost,
+  } = useContext(PostContext);
   const { bookmarks } = postData;
 
   // Destructure data
@@ -32,6 +40,10 @@ export const DisplayPosts = ({ post }) => {
   // isBookmarked
 
   const isBookmarked = bookmarks.some((post) => post._id === _id);
+
+  // isLiked
+
+  const isLiked = likedBy.some((user) => user._id === currentUser._id);
 
   return (
     <div
@@ -112,7 +124,24 @@ export const DisplayPosts = ({ post }) => {
         >
           {/* Like count */}
           <div style={{ display: "flex", gap: "10px" }}>
-            <p>V</p>
+            {!isLiked && (
+              <img
+                onClick={() => likePost(_id)}
+                alt="Click to like post"
+                src={notLiked}
+                style={{ height: "25px", cursor: "pointer" }}
+              />
+            )}
+
+            {isLiked && (
+              <img
+                onClick={() => dislikePost(_id)}
+                alt="Click to dislike post"
+                src={liked}
+                style={{ height: "25px", cursor: "pointer" }}
+              />
+            )}
+
             <p>{likeCount}</p>
           </div>
 

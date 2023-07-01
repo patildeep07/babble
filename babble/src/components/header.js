@@ -23,7 +23,10 @@ export const Header = () => {
         }}
       />
       {isLoggedIn && (
-        <h1 onClick={() => logoutHandler()} style={{ cursor: "pointer" }}>
+        <h1
+          onClick={() => logoutHandler()}
+          style={{ cursor: "pointer", color: "red", alignSelf: "center" }}
+        >
           Logout
         </h1>
       )}

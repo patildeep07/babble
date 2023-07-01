@@ -30,6 +30,9 @@ export const Bookmarks = () => {
             margin: "20px 0",
           }}
         >
+          {bookmarks.length === 0 && (
+            <h2>You haven't bookmarked any post yet</h2>
+          )}
           {bookmarks.map((item) => {
             return <DisplayPosts key={item._id} post={item} />;
           })}
