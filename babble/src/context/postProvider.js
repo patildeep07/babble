@@ -6,15 +6,18 @@ export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
   const { authData } = useContext(AuthContext);
-  const { currentUser } = authData;
+  const { currentUser, suggestedUsers, allUsers } = authData;
 
   // Post reducer func
 
-  const reducerFunc = (state, action) => {
-    console.log({ state, action });
+  const postReducerFunc = (state, action) => {
+    // console.log({ state, action });
     switch (action.type) {
       case "SET_ALL_POSTS":
         return { ...state, allPosts: action.payload };
+
+      case "SET_SUGGESTED_POSTS":
+        return { ...state, suggestedPosts: action.payload };
 
       default:
         break;
@@ -23,9 +26,16 @@ export const PostProvider = ({ children }) => {
 
   // Post useReducer defined here
 
-  const [postData, postDispatch] = useReducer(reducerFunc, {
+  const [postData, postDispatch] = useReducer(postReducerFunc, {
     allPosts: [],
+    suggestedPosts: [],
   });
+
+  // Destructuring data
+
+  const { allPosts } = postData;
+
+  // All posts
 
   const getAllPosts = async () => {
     try {
@@ -41,6 +51,39 @@ export const PostProvider = ({ children }) => {
   useEffect(() => {
     getAllPosts();
   }, []);
+
+  // Get suggested posts
+
+  const isInFollowing = (postUsername, following) => {
+    if (following) {
+      const boolValue = following.some(
+        ({ username }) => username !== postUsername
+      );
+      return boolValue;
+    }
+  };
+
+  // Explanation: If there are no one in following it'll filter only based on current user. Or else, it will take in consider for the follwing as well
+
+  const getSuggestedPosts = (sUser) => {
+    if (currentUser.following && currentUser.following.length > 0) {
+      const explorePosts = allPosts.filter((post) =>
+        post.username === currentUser.username
+          ? false
+          : isInFollowing(post.username, currentUser.following)
+      );
+      postDispatch({ type: "SET_SUGGESTED_POSTS", payload: explorePosts });
+    } else {
+      const explorePosts = allPosts.filter(
+        (post) => post.username !== currentUser.username
+      );
+      postDispatch({ type: "SET_SUGGESTED_POSTS", payload: explorePosts });
+    }
+  };
+
+  useEffect(() => {
+    getSuggestedPosts(suggestedUsers);
+  }, [allUsers]);
 
   return (
     <PostContext.Provider

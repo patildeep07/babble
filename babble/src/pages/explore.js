@@ -10,15 +10,16 @@ import { DisplayPosts } from "../components/displayPosts";
 export const Explore = () => {
   // useContexts
   const { authData } = useContext(AuthContext);
-  const { currentUser } = authData;
+  const { currentUser, suggestedUsers } = authData;
 
   const { postData } = useContext(PostContext);
-  const { allPosts } = postData;
+  const { allPosts, suggestedPosts } = postData;
 
   // Explore posts
+  console.log(suggestedPosts);
 
-  const explorePosts = allPosts?.filter(
-    ({ username }) => username !== currentUser.username
+  const explorePosts = allPosts?.filter((post) =>
+    suggestedUsers.some(({ username }) => username === post.username)
   );
 
   return (
@@ -40,9 +41,10 @@ export const Explore = () => {
             margin: "20px 0",
           }}
         >
-          {explorePosts.map((item) => {
-            return <DisplayPosts key={item._id} post={item} />;
-          })}
+          {suggestedPosts &&
+            suggestedPosts.map((item) => {
+              return <DisplayPosts key={item._id} post={item} />;
+            })}
         </div>
 
         {/* Right side bar */}
