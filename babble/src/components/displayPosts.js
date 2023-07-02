@@ -5,6 +5,7 @@ import notBookmarked from "../images/notBookmarked.png";
 import bookmarked from "../images/bookmarked.png";
 import liked from "../images/liked.png";
 import notLiked from "../images/notLiked.png";
+import deleteIcon from "../images/deleteIcon.png";
 
 import { PostContext } from "../context/postProvider";
 
@@ -19,6 +20,7 @@ export const DisplayPosts = ({ post }) => {
     removeFromBookmarks,
     likePost,
     dislikePost,
+    deletePost,
   } = useContext(PostContext);
   const { bookmarks } = postData;
 
@@ -166,9 +168,14 @@ export const DisplayPosts = ({ post }) => {
             )}
           </div>
 
-          {/* Share */}
+          {/* Delete */}
           <div style={{ display: "flex" }}>
-            <p>V</p>
+            <img
+              alt="Delete"
+              onClick={() => deletePost(_id)}
+              style={{ height: "25px", cursor: "pointer" }}
+              src={deleteIcon}
+            />
           </div>
         </div>
       </div>

@@ -25,6 +25,12 @@ export const PostProvider = ({ children }) => {
       case "SET_EXPLORE_POSTS":
         return { ...state, explorePosts: action.payload };
 
+      case "SHOW_DIALOG":
+        return { ...state, showCreatePostDialog: true };
+
+      case "HIDE_DIALOG":
+        return { ...state, showCreatePostDialog: false };
+
       default:
         break;
     }
@@ -37,6 +43,7 @@ export const PostProvider = ({ children }) => {
     homePosts: [],
     bookmarks: [],
     explorePosts: [],
+    showCreatePostDialog: false,
   });
 
   // Destructuring data
@@ -228,16 +235,69 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  // Create a new post
+
+  const createPost = async (postDetails) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await axios.post(
+        "/api/posts",
+        {
+          postData: postDetails,
+        },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 201) {
+        alert("Created");
+        updateAllPosts(posts);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  // Delete post
+
+  const deletePost = async (postId) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await axios.delete(`/api/posts/${postId}`, {
+        headers: {
+          authorization: token,
+        },
+      });
+
+      if (status === 201) {
+        alert("Post deleted");
+        updateAllPosts(posts);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   // Post functions ends here
 
   return (
     <PostContext.Provider
       value={{
         postData,
+        postDispatch,
         addToBookmarks,
         removeFromBookmarks,
         likePost,
         dislikePost,
+        createPost,
+        deletePost,
       }}
     >
       {children}

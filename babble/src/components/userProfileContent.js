@@ -10,7 +10,7 @@ export const UserProfileContent = () => {
   const { authData } = useContext(AuthContext);
   const { currentUser } = authData;
 
-  const { postData } = useContext(PostContext);
+  const { postData, postDispatch } = useContext(PostContext);
   const { allPosts } = postData;
 
   // Random init
@@ -108,7 +108,7 @@ export const UserProfileContent = () => {
         <h1>
           Create your first post.{" "}
           <span
-            onClick={() => navigate("/create-post")}
+            onClick={() => postDispatch({ type: "SHOW_DIALOG" })}
             style={{ textDecoration: "underline" }}
           >
             Here
