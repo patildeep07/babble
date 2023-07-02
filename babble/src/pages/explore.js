@@ -10,7 +10,7 @@ export const Explore = () => {
   // useContexts
 
   const { postData } = useContext(PostContext);
-  const { suggestedPosts } = postData;
+  const { explorePosts } = postData;
 
   return (
     <div>
@@ -23,6 +23,7 @@ export const Explore = () => {
 
         {/* Middle Content */}
         {/* Display posts */}
+
         <div
           style={{
             display: "flex",
@@ -31,8 +32,8 @@ export const Explore = () => {
             margin: "20px 0",
           }}
         >
-          {suggestedPosts &&
-            suggestedPosts.map((item) => {
+          {explorePosts &&
+            explorePosts.map((item) => {
               return <DisplayPosts key={item._id} post={item} />;
             })}
         </div>
