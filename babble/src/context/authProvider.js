@@ -186,6 +186,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Update users
+
+  const updateUserDetails = async (userDetails) => {
+    try {
+      const {
+        status,
+        data: { user },
+      } = await axios.post(
+        "/api/users/edit",
+        {
+          userData: userDetails,
+        },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 201) {
+        authDispatch({ type: "SET_CURRENT_USER", payload: user });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Functionalities end here
 
   return (
@@ -198,6 +225,7 @@ export const AuthProvider = ({ children }) => {
         logoutHandler,
         followUserHandler,
         unfollowUserHandler,
+        updateUserDetails,
       }}
     >
       {children}

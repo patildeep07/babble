@@ -22,6 +22,7 @@ export const users = [
     updatedAt: formatDate(),
     avatar: avatarImage1,
     bio: "Hey, this is my bio",
+    url: "https://www.youtube.com/",
   },
   {
     _id: uuid(),

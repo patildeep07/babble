@@ -1,13 +1,20 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/authProvider";
 import { PostContext } from "../context/postProvider";
 import { useNavigate } from "react-router-dom";
 import { DisplayPosts } from "./displayPosts";
 
+// Avatars
+import avatarImage1 from "../backend/db/avatars/Avatar-1.png";
+import avatarImage2 from "../backend/db/avatars/Avatar-2.png";
+import avatarImage3 from "../backend/db/avatars/Avatar-3.png";
+import avatarImage4 from "../backend/db/avatars/Avatar-4.png";
+import avatarImage5 from "../backend/db/avatars/Avatar-5.png";
+
 export const UserProfileContent = () => {
   // UseContexts
 
-  const { authData } = useContext(AuthContext);
+  const { authData, updateUserDetails } = useContext(AuthContext);
   const { currentUser } = authData;
 
   const { postData, postDispatch } = useContext(PostContext);
@@ -28,6 +35,7 @@ export const UserProfileContent = () => {
     url,
     followers,
     following,
+    editUserProfile,
   } = currentUser;
 
   // Converting date
@@ -40,6 +48,14 @@ export const UserProfileContent = () => {
   const userPosts = allPosts?.filter(
     ({ username }) => username === currentUser.username
   );
+
+  // Change user details
+
+  const [userDetails, setUserDetails] = useState(currentUser);
+
+  const updateButtonHandler = () => {
+    updateUserDetails({ ...userDetails, editUserProfile: false });
+  };
 
   return (
     <div
@@ -71,12 +87,84 @@ export const UserProfileContent = () => {
           <p>@{username}</p>
           <p>Joined on: {date}</p>
 
-          {bio && <p>{bio}</p>}
-          {url && <p>Find me at {url} </p>}
+          {!editUserProfile && (
+            <div>
+              {bio && <p>{bio}</p>}
+              {url && (
+                <p>
+                  Find me at{" "}
+                  <a
+                    style={{ color: "white" }}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {url}
+                  </a>{" "}
+                </p>
+              )}
+            </div>
+          )}
 
-          <button style={{ margin: "10px 0 0 0", fontSize: "16px" }}>
-            Edit profile
-          </button>
+          {editUserProfile && (
+            <div>
+              {bio && (
+                <textarea
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, bio: e.target.value })
+                  }
+                  style={{ height: "20px", width: "80%" }}
+                  defaultValue={bio}
+                ></textarea>
+              )}
+              {url && (
+                <p>
+                  Find me at{" "}
+                  <textarea
+                    onChange={(e) =>
+                      setUserDetails({ ...userDetails, url: e.target.value })
+                    }
+                    style={{ height: "20px", width: "80%" }}
+                    defaultValue={url}
+                  ></textarea>
+                </p>
+              )}
+
+              <select
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, avatar: e.target.value })
+                }
+                defaultValue={avatar}
+              >
+                <option defaultChecked>Choose an avatar</option>
+                <option value={avatarImage1}>Avatar 1</option>
+                <option value={avatarImage2}>Avatar 2</option>
+                <option value={avatarImage3}>Avatar 3</option>
+                <option value={avatarImage4}>Avatar 4</option>
+                <option value={avatarImage5}>Avatar 5</option>
+              </select>
+            </div>
+          )}
+
+          {!editUserProfile && (
+            <button
+              onClick={() =>
+                updateUserDetails({ ...userDetails, editUserProfile: true })
+              }
+              style={{ margin: "10px 0 0 0", fontSize: "16px" }}
+            >
+              Edit profile
+            </button>
+          )}
+
+          {editUserProfile && (
+            <button
+              onClick={updateButtonHandler}
+              style={{ margin: "10px 0 0 0", fontSize: "16px" }}
+            >
+              Update
+            </button>
+          )}
 
           <div
             style={{
@@ -87,7 +175,10 @@ export const UserProfileContent = () => {
               margin: "10px 0 0 0",
             }}
           >
-            <p>posts</p>
+            <p>
+              <span style={{ fontWeight: "bold" }}>{userPosts.length}</span>{" "}
+              posts
+            </p>
             <p>
               <span style={{ fontWeight: "bold" }}>{followers.length}</span>{" "}
               followers
