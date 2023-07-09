@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { AuthContext } from "./authProvider";
 import axios, { all } from "axios";
+import { formatDate } from "../backend/utils/authUtils";
 
 export const PostContext = createContext();
 
@@ -31,6 +32,9 @@ export const PostProvider = ({ children }) => {
       case "HIDE_DIALOG":
         return { ...state, showCreatePostDialog: false };
 
+      case "SET_SORT_BY":
+        return { ...state, sortBy: action.payload };
+
       default:
         break;
     }
@@ -44,11 +48,14 @@ export const PostProvider = ({ children }) => {
     bookmarks: [],
     explorePosts: [],
     showCreatePostDialog: false,
+    sortBy: "",
   });
+
+  const token = localStorage.getItem("encodedToken");
 
   // Destructuring data
 
-  const { allPosts, bookmarks } = postData;
+  const { allPosts, bookmarks, sortBy } = postData;
 
   // All posts
 
@@ -70,6 +77,31 @@ export const PostProvider = ({ children }) => {
   useEffect(() => {
     getAllPosts();
   }, []);
+
+  // Edit posts
+
+  const editPostsHandler = async (givenPost) => {
+    try {
+      const {
+        status,
+        data: { posts },
+      } = await axios.post(
+        `/api/posts/edit/${givenPost._id}`,
+        { postData: givenPost },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+
+      if (status === 201) {
+        updateAllPosts(posts);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Get home posts
 
@@ -130,7 +162,7 @@ export const PostProvider = ({ children }) => {
 
   // add to Bookmarks function
 
-  const token = localStorage.getItem("encodedToken");
+  // const token = localStorage.getItem("encodedToken");
 
   const addToBookmarks = async (postId) => {
     try {
@@ -285,6 +317,47 @@ export const PostProvider = ({ children }) => {
     }
   };
 
+  // Sorting function
+
+  const setSortingOrder = () => {
+    if (sortBy === "Popularity") {
+      const sortList = allPosts.sort(
+        (a, b) => b.likes.likeCount - a.likes.likeCount
+      );
+      updateAllPosts(sortList);
+    }
+
+    if (sortBy === "Latest") {
+      const newData = getExtraInfo(allPosts);
+      const data = newData.sort(
+        (a, b) => a.timeSincePosted - b.timeSincePosted
+      );
+      updateAllPosts(data);
+    }
+  };
+
+  useEffect(() => {
+    setSortingOrder();
+  }, [sortBy]);
+
+  // Adding time since posted property
+
+  const timeDiff = (df2, df1) => {
+    var diff = (df2.getTime() - df1.getTime()) / 1000;
+    diff /= 60;
+    return Math.abs(Math.round(diff));
+  };
+
+  const getExtraInfo = (posts) => {
+    const currentTime = new Date(formatDate());
+    const newData = posts.map((post) => {
+      const postTime = new Date(post.createdAt);
+      const timeInterval = timeDiff(currentTime, postTime);
+      return { ...post, timeSincePosted: timeInterval };
+    });
+    return newData;
+  };
+
   // Post functions ends here
 
   return (
@@ -298,6 +371,7 @@ export const PostProvider = ({ children }) => {
         dislikePost,
         createPost,
         deletePost,
+        editPostsHandler,
       }}
     >
       {children}

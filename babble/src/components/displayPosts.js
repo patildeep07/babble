@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/authProvider";
 
 import notBookmarked from "../images/notBookmarked.png";
@@ -8,6 +8,7 @@ import notLiked from "../images/notLiked.png";
 import deleteIcon from "../images/deleteIcon.png";
 
 import { PostContext } from "../context/postProvider";
+import { EditPost } from "./editPost";
 
 export const DisplayPosts = ({ post }) => {
   // Usecontext
@@ -21,12 +22,21 @@ export const DisplayPosts = ({ post }) => {
     likePost,
     dislikePost,
     deletePost,
+    editPostsHandler,
   } = useContext(PostContext);
   const { bookmarks } = postData;
 
   // Destructure data
 
-  const { username, _id, content, likes, createdAt, postImage } = post;
+  const {
+    username,
+    _id,
+    content,
+    likes,
+    createdAt,
+    postImage,
+    showEditSection,
+  } = post;
 
   const { likeCount, likedBy, dislikedBy } = likes;
 
@@ -47,6 +57,21 @@ export const DisplayPosts = ({ post }) => {
 
   const isLiked = likedBy.some((user) => user._id === currentUser._id);
 
+  // Update posts
+
+  const editButtonHandler = () => {
+    editPostsHandler({
+      ...post,
+      showEditSection: true,
+    });
+  };
+
+  const [editedChangesValue, setEditedChangesValue] = useState(post);
+
+  const saveChangesButtonHandler = () => {
+    editPostsHandler({ ...editedChangesValue, showEditSection: false });
+  };
+
   return (
     <div
       style={{
@@ -63,6 +88,7 @@ export const DisplayPosts = ({ post }) => {
     >
       <div style={{ textAlign: "left", width: "100%" }}>
         {/* Post details starts */}
+
         <div
           style={{
             display: "flex",
@@ -93,15 +119,44 @@ export const DisplayPosts = ({ post }) => {
             <p style={{ fontWeight: "lighter" }}>@{username}</p>
           </div>
           {/* Third column */}
-          {currentUser.username === username && (
-            <h2 style={{ textDecoration: "underline", cursor: "pointer" }}>
+          {!showEditSection && currentUser.username === username && (
+            <h2
+              onClick={editButtonHandler}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
               EDIT
+            </h2>
+          )}
+
+          {/* Close edit section */}
+          {showEditSection && (
+            <h2
+              onClick={saveChangesButtonHandler}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              X
             </h2>
           )}
         </div>
 
         {/* Third row */}
-        <p>{content}</p>
+        {!showEditSection && <p>{content}</p>}
+
+        {showEditSection && (
+          <div>
+            <textarea
+              onChange={(e) =>
+                setEditedChangesValue({
+                  ...editedChangesValue,
+                  content: e.target.value,
+                })
+              }
+              defaultValue={content}
+              style={{ width: "90%" }}
+            />
+            <button onClick={saveChangesButtonHandler}>Save</button>
+          </div>
+        )}
 
         {/* Fourth row */}
         {postImage && <img alt="content" src={postImage} />}

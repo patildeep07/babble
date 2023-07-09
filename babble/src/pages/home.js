@@ -12,8 +12,8 @@ export const Home = () => {
   const { authData } = useContext(AuthContext);
   const { currentUser } = authData;
 
-  const { postData } = useContext(PostContext);
-  const { allPosts, homePosts } = postData;
+  const { postData, postDispatch } = useContext(PostContext);
+  const { allPosts, homePosts, sortBy } = postData;
 
   // Explore posts
 
@@ -40,6 +40,21 @@ export const Home = () => {
             margin: "20px 0",
           }}
         >
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <h4>Sort by:</h4>
+            <select
+              defaultValue={sortBy}
+              style={{ padding: "5px" }}
+              onChange={(e) =>
+                postDispatch({ type: "SET_SORT_BY", payload: e.target.value })
+              }
+            >
+              <option defaultChecked>Select one</option>
+              <option value="Latest">Latest</option>
+              <option value="Popularity">Popularity</option>
+            </select>
+          </div>
+
           {homePosts.map((item) => {
             return <DisplayPosts key={item._id} post={item} />;
           })}
