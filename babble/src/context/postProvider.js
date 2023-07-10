@@ -38,6 +38,9 @@ export const PostProvider = ({ children }) => {
       case "SET_SORT_BY":
         return { ...state, sortBy: action.payload };
 
+      case "TRIGGER_SORT":
+        return { ...state, triggerSort: !state.triggerSort };
+
       default:
         break;
     }
@@ -52,6 +55,7 @@ export const PostProvider = ({ children }) => {
     explorePosts: [],
     showCreatePostDialog: false,
     sortBy: "",
+    triggerSort: true,
   });
 
   const token = localStorage.getItem("encodedToken");
@@ -240,6 +244,7 @@ export const PostProvider = ({ children }) => {
         toast.success("Post liked");
         updateAllPosts(posts);
         updateBookmarksList(posts, bookmarks);
+        postDispatch({ type: "TRIGGER_SORT" });
       }
     } catch (error) {
       toast.error(error);
@@ -266,6 +271,7 @@ export const PostProvider = ({ children }) => {
         toast.success("Post disliked");
         updateAllPosts(posts);
         updateBookmarksList(posts, bookmarks);
+        postDispatch({ type: "TRIGGER_SORT" });
       }
     } catch (error) {
       toast.error(error);
@@ -324,16 +330,16 @@ export const PostProvider = ({ children }) => {
 
   // Sorting function
 
-  const setSortingOrder = () => {
+  const setSortingOrder = (givenPosts = allPosts) => {
     if (sortBy === "Popularity") {
-      const sortList = allPosts.sort(
+      const sortList = givenPosts.sort(
         (a, b) => b.likes.likeCount - a.likes.likeCount
       );
       updateAllPosts(sortList);
     }
 
     if (sortBy === "Latest") {
-      const newData = getExtraInfo(allPosts);
+      const newData = getExtraInfo(givenPosts);
       const data = newData.sort(
         (a, b) => a.timeSincePosted - b.timeSincePosted
       );
@@ -343,7 +349,7 @@ export const PostProvider = ({ children }) => {
 
   useEffect(() => {
     setSortingOrder();
-  }, [sortBy]);
+  }, [sortBy, postData.triggerSort]);
 
   // Adding time since posted property
 
