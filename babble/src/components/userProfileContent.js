@@ -109,6 +109,7 @@ export const UserProfileContent = () => {
           {editUserProfile && (
             <div>
               <textarea
+                placeholder="Enter your bio here"
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, bio: e.target.value })
                 }
@@ -119,6 +120,7 @@ export const UserProfileContent = () => {
               <p>
                 Find me at{" "}
                 <textarea
+                  placeholder="Enter your website here"
                   onChange={(e) =>
                     setUserDetails({ ...userDetails, url: e.target.value })
                   }
