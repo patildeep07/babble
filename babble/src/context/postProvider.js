@@ -3,6 +3,9 @@ import { AuthContext } from "./authProvider";
 import axios, { all } from "axios";
 import { formatDate } from "../backend/utils/authUtils";
 
+// toast
+import { toast } from "react-toastify";
+
 export const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
@@ -99,7 +102,7 @@ export const PostProvider = ({ children }) => {
         updateAllPosts(posts);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -182,10 +185,10 @@ export const PostProvider = ({ children }) => {
       if (status === 200) {
         updateBookmarksList(allPosts, bookmarks);
 
-        alert("Added to bookmarks");
+        toast.success("Added to bookmarks");
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -209,10 +212,10 @@ export const PostProvider = ({ children }) => {
       if (status === 200) {
         updateBookmarksList(allPosts, bookmarks);
 
-        alert("Removed from bookmarks");
+        toast.success("Removed from bookmarks");
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -234,11 +237,12 @@ export const PostProvider = ({ children }) => {
       );
 
       if (status === 201) {
+        toast.success("Post liked");
         updateAllPosts(posts);
         updateBookmarksList(posts, bookmarks);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -259,11 +263,12 @@ export const PostProvider = ({ children }) => {
       );
 
       if (status === 201) {
+        toast.success("Post disliked");
         updateAllPosts(posts);
         updateBookmarksList(posts, bookmarks);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -287,11 +292,11 @@ export const PostProvider = ({ children }) => {
       );
 
       if (status === 201) {
-        alert("Created");
+        toast.success("Post created");
         updateAllPosts(posts);
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -309,11 +314,11 @@ export const PostProvider = ({ children }) => {
       });
 
       if (status === 201) {
-        alert("Post deleted");
+        toast.success("Post deleted");
         updateAllPosts(posts);
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 

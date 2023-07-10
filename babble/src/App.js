@@ -9,6 +9,10 @@ import { AuthContext } from "./context/authProvider";
 import { Explore } from "./pages/explore";
 import { Bookmarks } from "./pages/bookmarks";
 
+// Toast
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const { authData } = useContext(AuthContext);
   const { isLoggedIn } = authData;
@@ -36,6 +40,8 @@ function App() {
           <Route path="/bookmarks" element={<Login />} />
         </Routes>
       )}
+
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

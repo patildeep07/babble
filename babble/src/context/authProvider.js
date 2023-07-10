@@ -2,6 +2,9 @@ import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Toast
+import { toast } from "react-toastify";
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -47,13 +50,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const { status } = await axios.post("/api/auth/signup", credentials);
       if (status === 201) {
-        alert("User created. You can proceed to login");
+        toast.success("User created. You can proceed to login");
         getAllUsers();
       } else if (status === 422) {
-        alert(`Username already exists!`);
+        toast.error(`Username already exists!`);
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -64,20 +67,20 @@ export const AuthProvider = ({ children }) => {
       const { status, data } = await axios.post("/api/auth/login", credentials);
       const { encodedToken, foundUser } = data;
       if (status === 200) {
-        alert("Successfully logged in");
+        toast.success("Successfully logged in");
         authDispatch({ type: "SET_CURRENT_USER", payload: foundUser });
         localStorage.setItem("encodedToken", encodedToken);
         navigate("/profile");
       }
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
   // Logout user
 
   const logoutHandler = () => {
-    alert("Logged out");
+    toast.success("Logged out");
     localStorage.removeItem("encodedToken");
     authDispatch({ type: "LOGOUT" });
     navigate("/login");
@@ -92,7 +95,7 @@ export const AuthProvider = ({ children }) => {
       } = await axios.get("/api/users");
       authDispatch({ type: "SET_ALL_USERS", payload: users });
     } catch (error) {
-      alert(error);
+      toast.error(error);
     }
   };
 
@@ -135,19 +138,19 @@ export const AuthProvider = ({ children }) => {
 
       // For 200 status, Success scenario
       if (status === 200) {
-        alert("User followed");
+        toast.success("User followed");
         authDispatch({ type: "SET_CURRENT_USER", payload: { ...user } });
       }
 
       if (status === 400) {
-        alert("You already follow this user");
+        toast.error("You already follow this user");
       }
     } catch (error) {
       if (error.status) {
         const { status, data } = error.response;
-        alert(`Error code: ${status} Message: ${data.errors[0]}`);
+        toast.error(`Error code: ${status} Message: ${data.errors[0]}`);
       } else {
-        alert(error);
+        toast.error(error);
       }
     }
   };
@@ -169,12 +172,12 @@ export const AuthProvider = ({ children }) => {
 
       // For 200 status, Success scenario
       if (status === 200) {
-        alert("User unfollowed");
+        toast.success("User unfollowed");
         authDispatch({ type: "SET_CURRENT_USER", payload: { ...user } });
       }
 
       if (status === 400) {
-        alert("You don't follow this user");
+        toast.error("You don't follow this user");
       }
     } catch (error) {
       if (error.status) {
@@ -209,7 +212,7 @@ export const AuthProvider = ({ children }) => {
         authDispatch({ type: "SET_CURRENT_USER", payload: user });
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
