@@ -4,6 +4,9 @@ import "./login.css";
 
 import { useNavigate } from "react-router-dom";
 
+// Toast
+import { toast } from "react-toastify";
+
 import { AuthContext } from "../context/authProvider";
 
 import avatarImage from "../backend/db/avatars/Avatar-1.png";
@@ -40,10 +43,10 @@ export const Signup = () => {
         signUp(credentials);
         navigate("/login");
       } else {
-        alert("Your passwords aren't matching");
+        toast.error("Your passwords aren't matching");
       }
     } else {
-      alert("Please enter all the fields");
+      toast.error("Please enter all the fields");
     }
   };
 
