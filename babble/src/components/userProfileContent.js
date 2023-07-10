@@ -108,27 +108,24 @@ export const UserProfileContent = () => {
 
           {editUserProfile && (
             <div>
-              {bio && (
+              <textarea
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, bio: e.target.value })
+                }
+                style={{ height: "20px", width: "80%" }}
+                defaultValue={bio}
+              ></textarea>
+
+              <p>
+                Find me at{" "}
                 <textarea
                   onChange={(e) =>
-                    setUserDetails({ ...userDetails, bio: e.target.value })
+                    setUserDetails({ ...userDetails, url: e.target.value })
                   }
                   style={{ height: "20px", width: "80%" }}
-                  defaultValue={bio}
+                  defaultValue={url}
                 ></textarea>
-              )}
-              {url && (
-                <p>
-                  Find me at{" "}
-                  <textarea
-                    onChange={(e) =>
-                      setUserDetails({ ...userDetails, url: e.target.value })
-                    }
-                    style={{ height: "20px", width: "80%" }}
-                    defaultValue={url}
-                  ></textarea>
-                </p>
-              )}
+              </p>
 
               <select
                 onChange={(e) =>
