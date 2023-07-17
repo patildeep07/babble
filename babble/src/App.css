@@ -1,9 +1,12 @@
 .App {
   text-align: center;
   box-sizing: border-box;
-  background-color: #001c30;
 
   min-height: 100vh;
+}
+
+body {
+  background-color: #001c30;
 }
 
 * {
