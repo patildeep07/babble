@@ -1,3 +1,9 @@
+:root {
+  --background-color: #121212;
+  --accent-color: #1d9bf0;
+  --text-color: #e7e9ea;
+}
+
 .App {
   text-align: center;
   box-sizing: border-box;
@@ -6,7 +12,7 @@
 }
 
 body {
-  background-color: #001c30;
+  background-color: var(--background-color);
 }
 
 * {
@@ -18,7 +24,7 @@ h2,
 h3,
 h4,
 p {
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 /* Grid Layout for entire app */
