@@ -11,7 +11,7 @@ export const Header = () => {
       <h1 onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
         Babble
       </h1>
-      <input
+      {/* <input
         placeholder="Search User"
         style={{
           border: "1px solid #dafffb",
@@ -21,7 +21,7 @@ export const Header = () => {
           color: "#fefefe",
           width: "300px",
         }}
-      />
+      /> */}
       {isLoggedIn && (
         <h1
           onClick={() => logoutHandler()}

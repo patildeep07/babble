@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   // Destructuring
 
-  const { currentUser, allUsers, suggestedUsers } = authData;
+  const { allUsers } = authData;
 
   // Creating a new user function (i.e. Sign Up)
 

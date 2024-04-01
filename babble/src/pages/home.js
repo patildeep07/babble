@@ -3,17 +3,17 @@ import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import { LeftSidebar } from "../components/leftSidebar";
 import { RightSidebar } from "../components/rightSidebar";
-import { AuthContext } from "../context/authProvider";
+// import { AuthContext } from "../context/authProvider";
 import { PostContext } from "../context/postProvider";
 import { DisplayPosts } from "../components/displayPosts";
 
 export const Home = () => {
   // useContexts
-  const { authData } = useContext(AuthContext);
-  const { currentUser } = authData;
+  // const { authData } = useContext(AuthContext);
+  // const { currentUser } = authData;
 
   const { postData, postDispatch } = useContext(PostContext);
-  const { allPosts, homePosts, sortBy } = postData;
+  const { homePosts, sortBy } = postData;
 
   // Explore posts
 

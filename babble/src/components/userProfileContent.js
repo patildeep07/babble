@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/authProvider";
 import { PostContext } from "../context/postProvider";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { DisplayPosts } from "./displayPosts";
 
 // Avatars
@@ -22,7 +22,7 @@ export const UserProfileContent = () => {
 
   // Random init
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Destructuring current user
   const {
@@ -45,9 +45,11 @@ export const UserProfileContent = () => {
 
   // User posts
 
-  const userPosts = allPosts?.filter(
-    ({ username }) => username === currentUser.username
-  );
+  const userPosts = allPosts
+    ?.filter(({ username }) => username === currentUser.username)
+    .sort((a, b) => b.id - a.id);
+
+  console.log(userPosts);
 
   // Change user details
 
