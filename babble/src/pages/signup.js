@@ -12,6 +12,8 @@ import { AuthContext } from "../context/authProvider";
 import avatarImage from "../backend/db/avatars/Avatar-1.png";
 
 export const Signup = () => {
+  document.title = "Create new account";
+
   const { signUp } = useContext(AuthContext);
   const navigate = useNavigate();
 

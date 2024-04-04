@@ -7,6 +7,8 @@ import { RightSidebar } from "../components/rightSidebar";
 import { PostContext } from "../context/postProvider";
 
 export const Bookmarks = () => {
+  document.title = "Bookmarks";
+
   // usecontext
   const { postData } = useContext(PostContext);
   const { bookmarks } = postData;

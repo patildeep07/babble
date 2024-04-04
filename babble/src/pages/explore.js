@@ -7,6 +7,7 @@ import { PostContext } from "../context/postProvider";
 import { DisplayPosts } from "../components/displayPosts";
 
 export const Explore = () => {
+  document.title = "Explore new content";
   // useContexts
 
   const { postData } = useContext(PostContext);

@@ -8,18 +8,10 @@ import { PostContext } from "../context/postProvider";
 import { DisplayPosts } from "../components/displayPosts";
 
 export const Home = () => {
-  // useContexts
-  // const { authData } = useContext(AuthContext);
-  // const { currentUser } = authData;
+  document.title = "Home";
 
   const { postData, postDispatch } = useContext(PostContext);
   const { homePosts, sortBy } = postData;
-
-  // Explore posts
-
-  // const homePosts = allPosts?.filter(
-  //   ({ username }) => username === currentUser.username
-  // );
 
   return (
     <div>
@@ -40,7 +32,13 @@ export const Home = () => {
             margin: "20px 0",
           }}
         >
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              alignItems: "center",
+            }}
+          >
             <h4>Sort by:</h4>
             <select
               defaultValue={sortBy}

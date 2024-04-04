@@ -75,18 +75,24 @@ export const DisplayPosts = ({ post }) => {
   return (
     <div
       style={{
-        boxSizing: "border-box",
-        backgroundColor: "#176B87",
+        // backgroundColor: "#176B87",
         width: "80%",
-        padding: "20px 20px",
-        margin: " 20px 0",
+        padding: " 20px 0",
         display: "flex",
         flexDirection: "column",
-        gap: "5px",
+        gap: "20px",
         alignItems: "center",
       }}
     >
-      <div style={{ textAlign: "left", width: "100%" }}>
+      <div
+        style={{
+          textAlign: "left",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
         {/* Post details starts */}
 
         <div
@@ -161,13 +167,13 @@ export const DisplayPosts = ({ post }) => {
         {/* Fourth row */}
         {postImage && <img alt="content" src={postImage} />}
 
-        <hr
+        {/* <hr
           style={{
             margin: "20px 0 ",
             borderTop: "1px dashed lightGray",
             borderBottom: "none",
           }}
-        />
+        /> */}
 
         {/* Fifth row */}
         <div
@@ -235,6 +241,13 @@ export const DisplayPosts = ({ post }) => {
         </div>
       </div>
 
+      <hr
+        style={{
+          borderTop: "1px dashed lightGray",
+          borderBottom: "none",
+          alignSelf: "stretch",
+        }}
+      />
       {/* Post details ends */}
     </div>
   );

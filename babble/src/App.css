@@ -4,6 +4,10 @@
   --text-color: #e7e9ea;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
   box-sizing: border-box;

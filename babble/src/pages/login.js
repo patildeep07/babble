@@ -10,16 +10,7 @@ import { AuthContext } from "../context/authProvider";
 import axios from "axios";
 
 export const Login = () => {
-  const clickHandler = async () => {
-    try {
-      const { data, status } = await axios.get("/api/users");
-      if (status === 200) {
-        console.log(data);
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
+  document.title = "Login";
 
   const { logInUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -89,7 +80,6 @@ export const Login = () => {
             Don't have an account yet? Click here to create a new one!
           </p>
         </div>
-        {/* <button onClick={clickHandler}>Show users</button> */}
       </div>
     </div>
   );

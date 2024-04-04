@@ -6,6 +6,7 @@ import { Footer } from "../components/footer";
 import { UserProfileContent } from "../components/userProfileContent";
 
 export const Profile = () => {
+  document.title = "Profile";
   return (
     <div>
       {/* Header */}
