@@ -20,6 +20,7 @@ export const LeftSidebar = () => {
         borderRight: "1px solid #dafffb",
         paddingLeft: "30px",
       }}
+      className="navBar"
     >
       <h1 onClick={() => navigate("/")} style={styleCursor}>
         Home

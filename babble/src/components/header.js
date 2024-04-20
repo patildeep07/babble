@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
+import { IoMdLogOut } from "react-icons/io";
 
 export const Header = () => {
   const { authData, logoutHandler } = useContext(AuthContext);
@@ -27,8 +28,20 @@ export const Header = () => {
           onClick={() => logoutHandler()}
           style={{ cursor: "pointer", color: "red", alignSelf: "center" }}
         >
-          Logout
+          <i></i>
         </h1>
+      )}
+
+      {isLoggedIn && (
+        <IoMdLogOut
+          onClick={() => logoutHandler()}
+          style={{
+            cursor: "pointer",
+            color: "white",
+            alignSelf: "center",
+            fontSize: "26px",
+          }}
+        />
       )}
     </div>
   );

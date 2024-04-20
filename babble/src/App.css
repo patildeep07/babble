@@ -117,4 +117,12 @@ button {
   .form {
     width: 80%;
   }
+
+  .layout-25-50-25 {
+    grid-template-columns: auto;
+  }
+
+  .navBar {
+    display: none;
+  }
 }

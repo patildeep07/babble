@@ -96,12 +96,12 @@ export const UserProfileContent = () => {
                 <p>
                   Find me at{" "}
                   <a
-                    style={{ color: "white" }}
+                    style={{ color: "white", textOverflow: "clip" }}
                     href={url}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {url}
+                    <p>{url}</p>
                   </a>{" "}
                 </p>
               )}
